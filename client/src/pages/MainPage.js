@@ -56,7 +56,7 @@ return (
                 ):""}
             </div>
               <p className="Recipe-name">{val.name}</p>
-              <p>{val.notes.length > 300 ? val.notes.substring(0,300)+ " ..." : val.notes}</p>
+              <p className="Recipe-notes">{val.notes.length > 90 ? val.notes.substring(0,90)+ " ..." : val.notes}</p>
             </div>
           </div>
            )  })}  

@@ -1,0 +1,40 @@
+
+.uploadRecipe{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:90%;
+}
+
+.uploadRecipe > div{
+    width:100%;
+}
+
+.uploadRecipe input {
+    width: 90%;
+    height: 50px;
+    margin: 10px;
+    outline: none;
+    font-size: 20px;
+}
+  
+.uploadRecipe textarea{
+    height: 120px;
+    width: 90%;
+    margin: 10px;
+}
+
+.CreateRecipe{
+    min-height: calc(100vh - 80px);
+    background-color: antiquewhite;
+}
+
+.Upper-split{
+    border-top: 1px solid #333;
+    margin: 5px 0;
+}
+
+.uploadRecipe label{
+    font-weight: bold;
+}
