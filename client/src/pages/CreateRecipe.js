@@ -1,20 +1,30 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState} from 'react';
 import {useNavigate} from 'react-router-dom'
 import Axios from 'axios'
+import { InputWithSections} from '../modules/InputWithSections'
 
 import '../CreateRecipe.css'
 
 export default function CreateRecipe() {
     
     const [name,setName] = useState("");
+
     const [image,setImage] = useState("");
+    const [imageDemoRequestPending,setImageDemoRequestPending] = useState(0);
+    /*
+    0 - demo not requested,
+    1 - demo requested, waiting for image,
+    2 - demo requested, image not found
+    3 - demo requested, image displayed
+    */
+
     const [cheatSheet,setCheatSheet] = useState("");
-    const [ingredientsTitle,setIngredientsTitle] = useState([""]);
-    const [ingredientsSection,setIngredientsSection] = useState([""]);
+
     const [nutrients,setNutrients] = useState("");
     const [notes,setNotes] = useState("");
-    const [recipeTitle,setRecipeTitle] = useState([""]);
-    const [recipeSection,setRecipeSection] = useState([""]);
+
+    const [ingredientsStringSeparated, setIngredientsStringSeparated] = useState("");
+    const [recipeStringSeparated, setRecipeStringSeparated] = useState("");
 
     let navigate = useNavigate();
 
@@ -37,7 +47,9 @@ export default function CreateRecipe() {
         })
     }
 
-    console.log(ingredientsTitle)
+    function updateDataFromInputWithSeparator (e,setVariable){
+        setVariable(e)
+    }
 
     return (
         <div className="CreateRecipe">
@@ -53,40 +65,16 @@ export default function CreateRecipe() {
                     <input type="text" onChange={(e)=> {
                         setImage(e.target.value)
                     }}/>
+                    <div className = "RecipePage-imgContainer">
+                    <img className="recipe-image" src={image}></img>
+                    </div>
                 </div>
                 <div className = "Upper-split">
                     <label>ingredients:</label><br/><br/>
-                    {ingredientsTitle.map((element,index)=>{
-                        return(
-                        <div key = {element + index}>
-                            <button>add</button><br/>
-                            Subsection {index + 1}
-                            <button 
-                                onClick ={()=>{
-                                    setIngredientsTitle(ingredientsTitle.filter((__ , i)=> i !== index))
-                                    setIngredientsSection(ingredientsSection.filter((__ , i)=> i !== index))
-                                }}>
-                            x</button>
-                            <div> Title: <br/> 
-                            <input type="text"onChange={(e)=>{
-                                var ingredientsTitle_temp = ingredientsTitle
-                                ingredientsTitle_temp [index] = e.target.value
-                                console.log(ingredientsTitle_temp)
-                                setIngredientsTitle(ingredientsTitle_temp)
-                            }}></input>
-                            </div>
-                            <div> Content:
-                            <textarea onChange={(e)=>{
-                                setIngredientsSection(ingredientsSection.splice(index,1,e.target.value))
-                            }}></textarea>
-                            </div>
-                        </div>
-                        )
-                    })}
-                <button onClick ={()=>{
-                    setIngredientsTitle([...ingredientsTitle,""])
-                    setIngredientsSection([...ingredientsSection,""])
-                }}>add</button>
+                    <InputWithSections 
+                        updateVariableStringCallback={updateDataFromInputWithSeparator}
+                        setVariableStringCallback={setIngredientsStringSeparated}
+                        separator={"[newSection]"}/>
                 </div>
                 <div className = "Upper-split">
                     <label>nutrients:</label><br/><br/>
@@ -110,16 +98,10 @@ export default function CreateRecipe() {
                 </div>
                 <div className = "Upper-split">
                     <label>recipe:</label><br/><br/>
-                    <div> Subsection title
-                        <input type="text" onChange={(e)=>{
-                            setRecipeTitle(e.target.value)
-                        }}></input>
-                    </div>
-                    <div> Subsection content
-                        <textarea onChange={(e)=>{
-                            setRecipeSection(e.target.value)
-                        }}></textarea>
-                    </div>
+                    <InputWithSections 
+                        updateVariableStringCallback={updateDataFromInputWithSeparator}
+                        setVariableStringCallback={setRecipeStringSeparated}
+                        separator={"[newSection]"}/>
                 </div>
                 <button onClick={submitPost}>Submit Recipe</button>
             </div>
