@@ -1,0 +1,13 @@
+.listOfAvailableTags{
+    list-style-type: none;
+    padding: 0;
+}
+
+.listOfAvailableTags li{
+    padding: 5px 0 5px 5px;
+}
+
+.listOfAvailableTags li:hover{
+    cursor: grab;
+    font-weight: bold;
+}

@@ -38,6 +38,19 @@ app.get("/api/getRecipeId/:id", (req,res)=>{
     });   
 });
 
+app.get("/api/getAllTags", (req,res)=>{
+
+    db.query("SELECT * FROM tags",
+    (err,result)=>{
+        if(err) {
+        console.log(err)
+        } 
+    res.send(result)
+    });   
+    
+    
+})
+
 // Route for creating the post
     //dodać zapytanie o tagi
 app.post('/api/create', (req,res)=> {

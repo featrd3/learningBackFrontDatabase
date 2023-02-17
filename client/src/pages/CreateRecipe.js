@@ -1,7 +1,9 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom'
 import Axios from 'axios'
-import { InputWithSections} from '../modules/InputWithSections'
+import { InputWithSections } from '../modules/InputWithSections'
+import { ListWithDisplayOfSelected } from '../modules/ListWithDisplayOfSelected'
+
 
 import '../CreateRecipe.css'
 
@@ -10,13 +12,6 @@ export default function CreateRecipe() {
     const [name,setName] = useState("");
 
     const [image,setImage] = useState("");
-    const [imageDemoRequestPending,setImageDemoRequestPending] = useState(0);
-    /*
-    0 - demo not requested,
-    1 - demo requested, waiting for image,
-    2 - demo requested, image not found
-    3 - demo requested, image displayed
-    */
 
     const [cheatSheet,setCheatSheet] = useState("");
 
@@ -26,7 +21,21 @@ export default function CreateRecipe() {
     const [ingredientsStringSeparated, setIngredientsStringSeparated] = useState("");
     const [recipeStringSeparated, setRecipeStringSeparated] = useState("");
 
+    const [tags, setTags] = useState([{id_tag: 0,name_tag:"",color:""}]);
+
     let navigate = useNavigate();
+
+    useEffect(()=>{
+        updateTagsList()
+    },[])
+
+    function updateTagsList () {
+        Axios.get("http://localhost:3002/api/getAllTags").then((data)=>{
+
+            setTags(data.data)
+
+        });
+      }
 
     const submitPost = () => {
         Axios.post('http://localhost:3002/api/create',
@@ -66,8 +75,16 @@ export default function CreateRecipe() {
                         setImage(e.target.value)
                     }}/>
                     <div className = "RecipePage-imgContainer">
-                    <img className="recipe-image" src={image}></img>
+                        {(image !== "")?
+                        (<img className="recipe-image" src={image}></img>):<div> img demo</div>}
+                    
                     </div>
+                </div>
+                <div className = "Upper-split">
+                    <label>tags:</label><br/><br/>
+                    <ListWithDisplayOfSelected
+                        tagsArray = {tags}
+                    />
                 </div>
                 <div className = "Upper-split">
                     <label>ingredients:</label><br/><br/>
