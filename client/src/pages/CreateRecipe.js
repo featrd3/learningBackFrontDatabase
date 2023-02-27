@@ -22,7 +22,8 @@ export default function CreateRecipe() {
     const [recipeStringSeparated, setRecipeStringSeparated] = useState("");
 
     const [tags, setTags] = useState([{id_tag: 0,name_tag:"",color:""}]);
-
+    const [ selectedTags, setSelectedTags ] = useState ([])
+    
     let navigate = useNavigate();
 
     useEffect(()=>{
@@ -37,23 +38,36 @@ export default function CreateRecipe() {
         });
       }
 
-    const submitPost = () => {
-        Axios.post('http://localhost:3002/api/create',
-        {
-            //userName: userName, title: title, text:text
-        }).then((response)=>{
-        console.log(response.data)
+    const submitRecipe = () => {
+        // Axios.post('http://localhost:3002/api/create',
+        // {
+        //     //userName: userName, title: title, text:text
+        // }).then((response)=>{
+        // console.log(response.data)
 
-        const documentInput1 = document.getElementsByTagName('input')[1]
-        const documentInput2 = document.getElementsByTagName('input')[0]
-        const documentTextarea = document.getElementsByTagName('textarea')[0]
+        // const documentInput1 = document.getElementsByTagName('input')[1]
+        // const documentInput2 = document.getElementsByTagName('input')[0]
+        // const documentTextarea = document.getElementsByTagName('textarea')[0]
 
-        documentInput1.value="";
-        documentInput2.value="";
-        documentTextarea.value="";
+        // documentInput1.value="";
+        // documentInput2.value="";
+        // documentTextarea.value="";
 
-        navigate(`/post/${response.data.insertId}`)
-        })
+        // navigate(`/post/${response.data.insertId}`)
+        // })
+        var Recipe = {
+            cheatSheet: cheatSheet,
+            image: image,
+            ingredients: ingredientsStringSeparated,
+            name: name,
+            notes: notes,
+            nutrients: nutrients,
+            recipe: recipeStringSeparated,
+            tag_colour: "color",
+            tag_name: "name"
+        }
+
+        //console.log(Recipe)
     }
 
     function updateDataFromInputWithSeparator (e,setVariable){
@@ -84,6 +98,9 @@ export default function CreateRecipe() {
                     <label>tags:</label><br/><br/>
                     <ListWithDisplayOfSelected
                         tagsArray = {tags}
+                        selectedTags = {selectedTags}
+                        setSelectedTags = {setSelectedTags}
+                        updateVariableStringCallback = {updateDataFromInputWithSeparator}
                     />
                 </div>
                 <div className = "Upper-split">
@@ -120,7 +137,7 @@ export default function CreateRecipe() {
                         setVariableStringCallback={setRecipeStringSeparated}
                         separator={"[newSection]"}/>
                 </div>
-                <button onClick={submitPost}>Submit Recipe</button>
+                <button onClick={submitRecipe}>Submit Recipe</button>
             </div>
         </div>
     )

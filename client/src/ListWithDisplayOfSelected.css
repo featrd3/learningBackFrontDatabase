@@ -1,13 +1,13 @@
-.listOfAvailableTags{
+.listOfTags{
     list-style-type: none;
     padding: 0;
 }
 
-.listOfAvailableTags li{
+.listOfTags li{
     padding: 5px 0 5px 5px;
 }
 
-.listOfAvailableTags li:hover{
+.listOfTags li:hover{
     cursor: grab;
     font-weight: bold;
 }

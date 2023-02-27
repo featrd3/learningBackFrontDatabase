@@ -6,6 +6,12 @@ export function ListWithDisplayOfSelected(props) {
     const [ selectedTags, setSelectedTags ] = useState ([])
     const [ filterString, setFilterString ]= useState ("")
 
+    useEffect(()=>{
+
+        props.updateVariableStringCallback(selectedTags,props.setSelectedTags)
+        
+    },[selectedTags])
+
     function filterFunction(e){
         setFilterString(e.target.value)
     }
@@ -19,15 +25,19 @@ export function ListWithDisplayOfSelected(props) {
 
     function removeFromSelectedTags(tagObject){
         let temp_selectedTags = [...selectedTags]
-        temp_selectedTags = temp_selectedTags.splice (selectedTags.indexOf(tagObject), 0)
+        temp_selectedTags.splice(temp_selectedTags.indexOf(tagObject),1)
         setSelectedTags (temp_selectedTags)
+    }   
+
+    function tagContainsFilterAndNotSelected(tagObject){
+        return (tagObject.name_tag.toUpperCase().indexOf(filterString.toUpperCase()) > -1 && selectedTags.indexOf(tagObject) === -1)
     }
 
-    console.log(selectedTags)
+
 
     return(
         <div>
-            <ul className = "listOfSelectedTags">
+            <ul className = "listOfTags">
                     {selectedTags.map((tag) => {
                         return(
                             <li style={{backgroundColor: tag.colour}}
@@ -41,8 +51,8 @@ export function ListWithDisplayOfSelected(props) {
             <input type="text" 
                 onKeyUp={(e)=>{filterFunction(e)}} 
                 placeholder="Tag name..."/>
-                <ul className = "listOfAvailableTags">
-                    {props.tagsArray.filter(tag => tag.name_tag.toUpperCase().indexOf(filterString.toUpperCase()) > -1 && selectedTags.indexOf(tag) === -1).slice(0,10).map((tag,index)=>{
+                <ul className = "listOfTags">
+                    {props.tagsArray.filter(tag => tagContainsFilterAndNotSelected(tag)).slice(0,10).map((tag,index)=>{
                         return(
                             <li style={{backgroundColor: tag.colour}}
                             key = {tag.id_tag}
